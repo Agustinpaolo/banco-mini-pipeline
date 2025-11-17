@@ -1,3 +1,14 @@
 venv/
 __pycache__/
 .DS_Store
+
+# Ignore data files
+data/raw/*
+data/processed/*
+*.csv
+
+# Logs
+*.log
+
+# Python artifacts
+*.pyc
