@@ -16,7 +16,6 @@ La idea es simular un escenario simple de banco:
 - Practicar lectura y procesamiento de datos con **Python**.
 - Practicar transformaciones y agregaciones con **PySpark**.
 - Dar los primeros pasos en **orquestación de ETL** con **Apache Airflow**.
-- Tener un proyecto concreto para mostrar en CV / LinkedIn.
 
 ---
 
