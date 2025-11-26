@@ -1,14 +1,19 @@
+# Virtual environments
 venv/
+.venv/
+
+# Airflow logs
+logs/
+
+# Python cache
 __pycache__/
-.DS_Store
 
-# Ignore data files
+# Data
 data/raw/*
+!data/raw/transactions.csv
+
 data/processed/*
-*.csv
 
-# Logs
-*.log
+# Environment
+.env
 
-# Python artifacts
-*.pyc

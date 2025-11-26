@@ -1,9 +1,7 @@
 """
-spark_transform.py
+Transforma datos de transacciones bancarias usando PySpark.
 
-Módulo de transformación de datos bancarios usando PySpark.
-
-Este script:
+Este script se ejecuta de forma independiente (no desde Airflow):
 - Lee el archivo CSV de transacciones bancarias ficticias desde data/raw/transactions.csv
   utilizando una SparkSession.
 - Normaliza la columna "Transaction Type" (minúsculas, sin espacios laterales).
@@ -33,8 +31,9 @@ from pyspark.sql.functions import (
     count as spark_count,
 )
 
-RAW_PATH = "data/raw/transactions.csv"
-OUTPUT_PATH = "data/processed/sender_debits_summary_spark.csv"
+BASE_DIR = Path(__file__).parent.parent.resolve()
+RAW_PATH = BASE_DIR / "data" / "raw" / "transactions.csv"
+OUTPUT_PATH = BASE_DIR / "data" / "processed" / "sender_debits_summary_spark.csv"
 
 
 def run_spark_etl() -> None:
@@ -80,13 +79,11 @@ def run_spark_etl() -> None:
     )
 
     try:
-        logging.info("Leyendo CSV con Spark desde %s", RAW_PATH)
-        df = (
-            spark.read.csv(
-                RAW_PATH,
+        logging.info("Leyendo CSV con Spark desde %s", str(RAW_PATH))
+        df = spark.read.csv(
+                str(RAW_PATH),
                 header=True,
                 inferSchema=True,
-            )
         )
 
         # Columnas esperadas según el esquema del dataset
@@ -139,11 +136,11 @@ def run_spark_etl() -> None:
         )
 
         # Asegurar carpeta de salida
-        Path("data/processed").mkdir(parents=True, exist_ok=True)
+        (OUTPUT_PATH.parent).mkdir(parents=True, exist_ok=True)
 
         # Para este proyecto, escribimos un único CSV usando pandas
         logging.info("Convirtiendo resultado de Spark a pandas y guardando CSV")
-        summary.toPandas().to_csv(OUTPUT_PATH, index=False)
+        summary.toPandas().to_csv(str(OUTPUT_PATH), index=False)
 
         logging.info(
             "Spark ETL completado. Archivo generado en: %s",
